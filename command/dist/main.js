@@ -42,12 +42,40 @@ const insertJpostcodes = (db, jpostcodes) => {
 const dropPostcodes = (db) => {
     db.prepare('drop table postcodes').run();
 };
-const rows = getJpostcodes();
-const jpostcodes = rows.map(row => toJpostcode(row.split(',')));
 const options = null;
 const db = require('better-sqlite3')('./../postcode.db', options);
-// insertJpostcodes(db, jpostcodes)
-dropPostcodes(db);
+const { Command } = require('commander');
+const program = new Command();
+program
+    .name('jpostcoder')
+    .description('jpostcoder CLI')
+    .version('0.0.0');
+program.command('insert')
+    .description('execute insert')
+    // .argument('<string>', 'xxx')
+    // .option('--first', 'display just the first substring')
+    // .option('-s, --separator <char>', 'separator character', ',')
+    .action((str, options) => {
+    // const limit = options.first ? 1 : undefined;
+    // console.log(str.split(options.separator, limit));
+    console.log('Insert japan postcodes to database!');
+    const rows = getJpostcodes();
+    const jpostcodes = rows.map(row => toJpostcode(row.split(',')));
+    insertJpostcodes(db, jpostcodes);
+});
+program.command('drop')
+    .description('execute drop')
+    .action((str, options) => {
+    console.log('Drop postcodes table...');
+    dropPostcodes(db);
+});
+program.command('create')
+    .description('execute create')
+    .action((str, options) => {
+    console.log('Create postcodes table');
+    // TODO: create table/table分割
+});
+program.parse();
 // FIXME: 「1 "0600000" "北海道" "札幌市中央区" "以下に掲載がない場合"」と"0600000"が0でパディングしてしまってる
 // const row: jpostcode = db.prepare('SELECT * FROM postcodes').get()
 // console.log(row.id, row.postcode, row.ken, row.municipalities, row.area)
