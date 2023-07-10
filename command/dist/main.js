@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const debugRawJpostcode = (vs) => {
     const header = ['全国地方公共団体コード', '（旧）郵便番号（5桁）', '郵便番号（7桁）', '都道府県名', '市区町村名', '町域名', '都道府県名', '市区町村名', '町域名', '一町域が二以上の郵便番号で表される場合の表示', '小字毎に番地が起番されている町域の表示', '丁目を有する町域の場合の表示', '一つの郵便番号で二以上の町域を表す場合の表示', '更新の表示', '変更理由'];
     if (vs.length !== header.length)
@@ -32,14 +33,21 @@ const toJpostcode = (vs) => {
         flg_f: parseInt(vs[14])
     };
 };
+const insertJpostcodes = (db, jpostcodes) => {
+    const query = db.prepare('INSERT INTO postcodes (code, postcode_old, postcode, ken_kana, municipalities_kana, area_kana, ken, municipalities, area, flg_a, flg_b, flg_c, flg_d, flg_e, flg_f) VALUES (@code, @postcode_old, @postcode, @ken_kana, @municipalities_kana, @area_kana, @ken, @municipalities, @area, @flg_a, @flg_b, @flg_c, @flg_d, @flg_e, @flg_f)');
+    db.transaction((jpostcodes) => {
+        jpostcodes.map(postcode => query.run(postcode));
+    })(jpostcodes);
+};
+const dropPostcodes = (db) => {
+    db.prepare('drop table postcodes').run();
+};
 const rows = getJpostcodes();
 const jpostcodes = rows.map(row => toJpostcode(row.split(',')));
 const options = null;
 const db = require('better-sqlite3')('./../postcode.db', options);
-const insertQuery = db.prepare('INSERT INTO postcodes (code, postcode_old, postcode, ken_kana, municipalities_kana, area_kana, ken, municipalities, area, flg_a, flg_b, flg_c, flg_d, flg_e, flg_f) VALUES (@code, @postcode_old, @postcode, @ken_kana, @municipalities_kana, @area_kana, @ken, @municipalities, @area, @flg_a, @flg_b, @flg_c, @flg_d, @flg_e, @flg_f)');
-const insert = db.transaction((jpostcode) => {
-    jpostcodes.map(postcode => insertQuery.run(postcode));
-});
-// insert(jpostcodes)
-const row = db.prepare('SELECT * FROM postcodes').get();
-console.log(row.id, row.postcode, row.ken, row.municipalities, row.area);
+// insertJpostcodes(db, jpostcodes)
+dropPostcodes(db);
+// FIXME: 「1 "0600000" "北海道" "札幌市中央区" "以下に掲載がない場合"」と"0600000"が0でパディングしてしまってる
+// const row: jpostcode = db.prepare('SELECT * FROM postcodes').get()
+// console.log(row.id, row.postcode, row.ken, row.municipalities, row.area)
