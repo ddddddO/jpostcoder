@@ -3,3 +3,6 @@ fetch:
 
 #create_app:
 #	yarn create vite app --template=react-ts
+
+# create_command:
+# 	yarn create vite command --template=vanilla-ts
