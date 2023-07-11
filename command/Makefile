@@ -10,5 +10,8 @@ insert:
 drop:
 	node dist/main.js drop
 
+create:
+	node dist/main.js create
+
 debug:
 	node dist/main.js debug

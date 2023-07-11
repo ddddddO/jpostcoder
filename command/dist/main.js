@@ -10,7 +10,7 @@ const db_1 = require("./db");
 const constraints_1 = require("./constraints");
 const jpostcode_1 = require("./jpostcode");
 const options = {
-    verbose: console.log
+// verbose: console.log // postcodeのinsert時にログが大量に出力されるためコメントアウト
 };
 const db = new better_sqlite3_1.default(constraints_1.database.path, options);
 const program = new commander_1.Command();
@@ -33,12 +33,7 @@ program.command('debug')
 });
 program.command('insert')
     .description('execute insert')
-    // .argument('<string>', 'xxx')
-    // .option('--first', 'display just the first substring')
-    // .option('-s, --separator <char>', 'separator character', ',')
     .action((str, options) => {
-    // const limit = options.first ? 1 : undefined;
-    // console.log(str.split(options.separator, limit));
     console.log('Insert japan postcodes to database!');
     const rows = (0, csv_1.getJpostcodes)();
     const jpostcodes = rows.map(row => (0, jpostcode_1.toJpostcode)(row.split(',')));
@@ -55,5 +50,6 @@ program.command('create')
     .action((str, options) => {
     console.log('Create postcodes table');
     // TODO: create table/table分割
+    (0, db_1.createPostcodes)(db);
 });
 program.parse();

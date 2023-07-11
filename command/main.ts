@@ -1,12 +1,12 @@
 import Database, { Options } from 'better-sqlite3'
 import { Command } from 'commander'
 import { getJpostcodes, debugRawJpostcode } from './csv'
-import { insertJpostcodes, dropPostcodes } from './db'
+import { insertJpostcodes, dropPostcodes, createPostcodes } from './db'
 import { database } from './constraints'
 import { jpostcode, toJpostcode } from './jpostcode'
 
 const options: Options = {
-  verbose: console.log
+  // verbose: console.log // postcodeのinsert時にログが大量に出力されるためコメントアウト
 }
 const db = new Database(database.path, options);
 
@@ -53,7 +53,8 @@ program.command('create')
   .description('execute create')
   .action((str: string, options: any) => {
     console.log('Create postcodes table')
-    // TODO: create table/table分割
+    // TODO: table分割
+    createPostcodes(db)
   });
 
 program.parse();
