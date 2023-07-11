@@ -37,14 +37,14 @@ export const command = (db: Database): void => {
         .map(row => toJpostcode(row.split(',')))
 
       insertJpostcodes(db, jpostcodes)
-    });
+    })
 
   program.command('drop')
     .description('execute drop')
     .action((str: string, options: any) => {
       console.log('Drop postcodes table...')
       dropPostcodes(db)
-    });
+    })
 
   program.command('create')
     .description('execute create')
@@ -52,7 +52,7 @@ export const command = (db: Database): void => {
       console.log('Create postcodes table')
       // TODO: table分割
       createPostcodes(db)
-    });
+    })
 
   program.parse()
 }
