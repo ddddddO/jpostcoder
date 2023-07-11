@@ -53,6 +53,14 @@ export const command = (db: Database): void => {
       // TODO: table分割
       createPostcodes(db)
     })
+  
+  program.command('download')
+    .description('execute download csv')
+    .action((str: string, options: any) => {
+      console.log('Download japan postcode csv')
+      // TODO:
+      // downloadCSV()
+    })
 
   program.parse()
 }

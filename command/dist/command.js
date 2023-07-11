@@ -46,6 +46,13 @@ const command = (db) => {
         // TODO: table分割
         (0, db_1.createPostcodes)(db);
     });
+    program.command('download')
+        .description('execute download csv')
+        .action((str, options) => {
+        console.log('Download japan postcode csv');
+        // TODO:
+        // downloadCSV()
+    });
     program.parse();
 };
 exports.command = command;
