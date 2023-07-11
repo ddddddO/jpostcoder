@@ -37,8 +37,10 @@ program.command('insert')
   .action((str: string, options: any) => {
     console.log('Insert japan postcodes to database!')
 
-    const rows: string[] = getJpostcodes()
-    const jpostcodes: jpostcode[] = rows.map(row => toJpostcode(row.split(',')))
+    const jpostcodes: jpostcode[] = getJpostcodes()
+      .filter(row => row.length !== 0)
+      .map(row => toJpostcode(row.split(',')))
+
     insertJpostcodes(db, jpostcodes)
   });
 

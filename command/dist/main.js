@@ -35,8 +35,9 @@ program.command('insert')
     .description('execute insert')
     .action((str, options) => {
     console.log('Insert japan postcodes to database!');
-    const rows = (0, csv_1.getJpostcodes)();
-    const jpostcodes = rows.map(row => (0, jpostcode_1.toJpostcode)(row.split(',')));
+    const jpostcodes = (0, csv_1.getJpostcodes)()
+        .filter(row => row.length !== 0)
+        .map(row => (0, jpostcode_1.toJpostcode)(row.split(',')));
     (0, db_1.insertJpostcodes)(db, jpostcodes);
 });
 program.command('drop')
@@ -49,7 +50,7 @@ program.command('create')
     .description('execute create')
     .action((str, options) => {
     console.log('Create postcodes table');
-    // TODO: create table/table分割
+    // TODO: table分割
     (0, db_1.createPostcodes)(db);
 });
 program.parse();
