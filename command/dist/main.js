@@ -1,12 +1,19 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
+const commander_1 = require("commander");
 const csv_1 = require("./csv");
 const db_1 = require("./db");
+const constraints_1 = require("./constraints");
 const jpostcode_1 = require("./jpostcode");
-const options = null;
-const db = require('better-sqlite3')('./../postcode.db', options);
-const { Command } = require('commander');
-const program = new Command();
+const options = {
+    verbose: console.log
+};
+const db = new better_sqlite3_1.default(constraints_1.database.path, options);
+const program = new commander_1.Command();
 program
     .name('jpostcoder')
     .description('jpostcoder CLI')

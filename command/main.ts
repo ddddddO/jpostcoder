@@ -1,12 +1,15 @@
-import type { Database } from 'better-sqlite3'
+import Database, { Options } from 'better-sqlite3'
+import { Command } from 'commander'
 import { getJpostcodes, debugRawJpostcode } from './csv'
 import { insertJpostcodes, dropPostcodes } from './db'
+import { database } from './constraints'
 import { jpostcode, toJpostcode } from './jpostcode'
 
-const options = null
-const db: Database = require('better-sqlite3')('./../postcode.db', options)
+const options: Options = {
+  verbose: console.log
+}
+const db = new Database(database.path, options);
 
-const { Command } = require('commander');
 const program = new Command();
 
 program
@@ -31,12 +34,7 @@ program.command('debug')
 
 program.command('insert')
   .description('execute insert')
-  // .argument('<string>', 'xxx')
-  // .option('--first', 'display just the first substring')
-  // .option('-s, --separator <char>', 'separator character', ',')
   .action((str: string, options: any) => {
-    // const limit = options.first ? 1 : undefined;
-    // console.log(str.split(options.separator, limit));
     console.log('Insert japan postcodes to database!')
 
     const rows: string[] = getJpostcodes()
