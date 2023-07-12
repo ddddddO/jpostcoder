@@ -1,8 +1,8 @@
 build:
 	tsc
 
-exec:
-	node dist/main.js
+download:
+	node dist/main.js download
 
 insert:
 	node dist/main.js insert

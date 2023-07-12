@@ -48,10 +48,10 @@ const command = (db) => {
     });
     program.command('download')
         .description('execute download csv')
-        .action((str, options) => {
+        .option('-d, --dest <path>', 'downloaded csv destination', './utf_all.csv')
+        .action((options) => {
         console.log('Download japan postcode csv');
-        // TODO:
-        // downloadCSV()
+        (0, csv_1.downloadJpostcodeCSV)(options.dest ? options.dest : './utf_all.csv');
     });
     program.parse();
 };

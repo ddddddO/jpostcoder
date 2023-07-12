@@ -1,6 +1,6 @@
 import { Database } from 'better-sqlite3'
 import { Command } from 'commander'
-import { getJpostcodes, debugRawJpostcode } from './csv'
+import { downloadJpostcodeCSV, getJpostcodes, debugRawJpostcode } from './csv'
 import { insertJpostcodes, dropPostcodes, createPostcodes } from './db'
 import { jpostcode, toJpostcode } from './jpostcode'
 
@@ -56,10 +56,10 @@ export const command = (db: Database): void => {
   
   program.command('download')
     .description('execute download csv')
-    .action((str: string, options: any) => {
+    .option('-d, --dest <path>', 'downloaded csv destination', './utf_all.csv')
+    .action((options: any) => {
       console.log('Download japan postcode csv')
-      // TODO:
-      // downloadCSV()
+      downloadJpostcodeCSV(options.dest ? options.dest : './utf_all.csv')
     })
 
   program.parse()
