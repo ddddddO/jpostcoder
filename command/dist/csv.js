@@ -22,8 +22,8 @@ const downloadJpostcodeCSV = (dest) => {
     download(dest, constraints_1.csv.japan_postcode_csv_url);
 };
 exports.downloadJpostcodeCSV = downloadJpostcodeCSV;
-const getJpostcodes = () => {
-    return (0, node_fs_1.readFileSync)(constraints_1.csv.path, 'utf8').split('\n');
+const getJpostcodes = (csvpath) => {
+    return (0, node_fs_1.readFileSync)(csvpath, 'utf8').split('\n');
 };
 exports.getJpostcodes = getJpostcodes;
 const debugRawJpostcode = (vs) => {

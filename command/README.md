@@ -1,3 +1,12 @@
+# jpostcoder CLI
+
+Create sqlite3 of postal data (utf_all.csv) provided by [JapanPost](https://www.post.japanpost.jp/zipcode/download.html).
+
+## One-liner
+```console
+$ make up
+```
+
 ## Usage
 
 ```console
