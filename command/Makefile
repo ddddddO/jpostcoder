@@ -15,3 +15,6 @@ create:
 
 debug:
 	node dist/main.js debug
+
+help:
+	node dist/main.js --help

@@ -11,7 +11,36 @@ const command = (db) => {
         .name('jpostcoder')
         .description('jpostcoder CLI')
         .version('0.0.0');
+    program.command('download')
+        .description('download japan postcodes csv (utf_all.csv)')
+        .option('-d, --dest <path>', 'downloaded csv destination', './utf_all.csv')
+        .action((options) => {
+        console.log('Download japan postcode csv');
+        (0, csv_1.downloadJpostcodeCSV)(options.dest ? options.dest : './utf_all.csv');
+    });
+    program.command('create')
+        .description('create table')
+        .action((str, options) => {
+        console.log('Create postcodes table');
+        (0, db_1.createPostcodes)(db); // TODO: table分割
+    });
+    program.command('insert')
+        .description('insert japan postcodes into table')
+        .action((str, options) => {
+        console.log('Insert japan postcodes to database!');
+        const jpostcodes = (0, csv_1.getJpostcodes)()
+            .filter(row => row.length !== 0)
+            .map(row => (0, jpostcode_1.toJpostcode)(row.split(',')));
+        (0, db_1.insertJpostcodes)(db, jpostcodes);
+    });
+    program.command('drop')
+        .description('drop table')
+        .action((str, options) => {
+        console.log('Drop postcodes table...');
+        (0, db_1.dropPostcodes)(db);
+    });
     program.command('debug')
+        .description('debug for command')
         .action((str, options) => {
         console.log('Debug...');
         console.log('--- from CSV ---');
@@ -23,35 +52,6 @@ const command = (db) => {
         // FIXME: 「1 "0600000" "北海道" "札幌市中央区" "以下に掲載がない場合"」と"0600000"が0でパディングしてしまってる
         const row = db.prepare('SELECT * FROM postcodes limit 1').get();
         console.log(row.id, row.postcode, row.ken, row.municipalities, row.area);
-    });
-    program.command('insert')
-        .description('execute insert')
-        .action((str, options) => {
-        console.log('Insert japan postcodes to database!');
-        const jpostcodes = (0, csv_1.getJpostcodes)()
-            .filter(row => row.length !== 0)
-            .map(row => (0, jpostcode_1.toJpostcode)(row.split(',')));
-        (0, db_1.insertJpostcodes)(db, jpostcodes);
-    });
-    program.command('drop')
-        .description('execute drop')
-        .action((str, options) => {
-        console.log('Drop postcodes table...');
-        (0, db_1.dropPostcodes)(db);
-    });
-    program.command('create')
-        .description('execute create')
-        .action((str, options) => {
-        console.log('Create postcodes table');
-        // TODO: table分割
-        (0, db_1.createPostcodes)(db);
-    });
-    program.command('download')
-        .description('execute download csv')
-        .option('-d, --dest <path>', 'downloaded csv destination', './utf_all.csv')
-        .action((options) => {
-        console.log('Download japan postcode csv');
-        (0, csv_1.downloadJpostcodeCSV)(options.dest ? options.dest : './utf_all.csv');
     });
     program.parse();
 };
