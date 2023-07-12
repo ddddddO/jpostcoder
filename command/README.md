@@ -21,9 +21,9 @@ Options:
 
 Commands:
   download [options]  download japan postcodes csv (utf_all.csv)
-  create              create table
-  insert              insert japan postcodes into table
-  drop                drop table
-  debug               debug for command
+  create [options]    create table
+  insert [options]    insert japan postcodes into table
+  drop [options]      drop table
+  debug [options]     debug for command
   help [command]      display help for command
 ```
