@@ -1,32 +1,29 @@
-import { mkdir, createWriteStream, readFileSync } from 'node:fs'
-import { dirname } from 'node:path'
-import { get } from 'node:https'
-import { csv } from './constraints'
+import { dirname } from "./deps.ts";
+import { csv } from "./constraints.ts";
 
-const download = (dest: string, src: string): void => {
-  get(src, res => {
-    const fileStream = createWriteStream(dest)
-    res.pipe(fileStream)
+const download = async (dest: string, src: string): Promise<void> => {
+  try {
+    const resp = await fetch(src);
+    if (resp.body) {
+      const file = Deno.openSync(dest, { write: true, create: true });
+      await resp.body.pipeTo(file.writable);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-    fileStream.on('finish', () => {
-      fileStream.close()
-    })
-  })
-}
-
-export const downloadJpostcodeCSV = (dest: string): void => {
-  mkdir(dirname(dest), { recursive: true }, (err) => {
-    if (err) throw err
-  })
-
-  download(dest, csv.japan_postcode_csv_url)
-}
+export const downloadJpostcodeCSV = async (dest: string): Promise<void> => {
+  await Deno.mkdir(dirname(dest), { recursive: true });
+  download(dest, csv.japan_postcode_csv_url);
+};
 
 export const getJpostcodes = (csvpath: string): string[] => {
-  return readFileSync(csvpath, 'utf8').split('\n')
-}
+  const raw = Deno.readTextFileSync(csvpath);
+  return raw.split("\n");
+};
 
 export const debugRawJpostcode = (vs: string[]): void => {
-  if (vs.length !== csv.header.length) throw new Error('not match column num')
-  vs.map((v, i) => console.log(csv.header[i]+':', v))
-}
+  if (vs.length !== csv.header.length) throw new Error("not match column num");
+  vs.map((v, i) => console.log(csv.header[i] + ":", v));
+};
