@@ -1,21 +1,27 @@
 import { dirname } from "./deps.ts";
 import { csv } from "./constraints.ts";
 
-const download = async (dest: string, src: string): Promise<void> => {
+const download = async (dest: string, src: string): Promise<boolean> => {
   try {
     const resp = await fetch(src);
     if (resp.body) {
       const file = Deno.openSync(dest, { write: true, create: true });
       await resp.body.pipeTo(file.writable);
     }
+    return true;
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 };
 
-export const downloadJpostcodeCSV = async (dest: string): Promise<void> => {
-  await Deno.mkdir(dirname(dest), { recursive: true });
-  download(dest, csv.japan_postcode_csv_url);
+export const downloadJpostcodeCSV = async (dest: string): Promise<boolean> => {
+  try {
+    await Deno.mkdir(dirname(dest), { recursive: true });
+    download(dest, csv.japan_postcode_csv_url);
+    return true;
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const getJpostcodes = (csvpath: string): string[] => {

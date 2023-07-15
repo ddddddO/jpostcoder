@@ -7,7 +7,7 @@ fmt:
 clean:
 	rm postcode.db utf_all.csv
 
-up: build download create insert
+up: build download drop create insert
 
 build:
 	deno compile --allow-all --unstable -o jpostcoder jpostcoder.ts

@@ -14,7 +14,7 @@ export const insertJpostcodes = (
 };
 
 export const dropPostcodes = (db: Database): void => {
-  db.exec("drop table postcodes");
+  db.exec("drop table if exists postcodes");
 };
 
 export const createPostcodes = (db: Database): void => {

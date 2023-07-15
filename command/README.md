@@ -7,8 +7,7 @@ Create sqlite3 of postal data (utf_all.csv) provided by
 
 ### using Deno
 
-> **Note**<br>
-> version: deno 1.35.1 (release, x86_64-unknown-linux-gnu)
+> **Note**<br> version: deno 1.35.1 (release, x86_64-unknown-linux-gnu)
 
 ```console
 $ deno compile --allow-all --unstable https://raw.githubusercontent.com/ddddddO/jpostcoder/main/command/jpostcoder.ts
@@ -16,13 +15,11 @@ $ deno compile --allow-all --unstable https://raw.githubusercontent.com/ddddddO/
 
 ### download binary from [here](https://github.com/ddddddO/jpostcoder/releases).
 
-
 ## Setup with one-liner
 
 ```console
-$ ./jpostcoder download && ./jpostcoder create && ./jpostcoder insert
+$ ./jpostcoder download && ./jpostcoder drop && ./jpostcoder create && ./jpostcoder insert
 ```
-
 
 ## Usage
 
