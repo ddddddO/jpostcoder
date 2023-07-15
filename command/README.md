@@ -3,11 +3,26 @@
 Create sqlite3 of postal data (utf_all.csv) provided by
 [JapanPost](https://www.post.japanpost.jp/zipcode/download.html).
 
-## One-liner
+## Installation
+
+### using Deno
+
+> **Note**<br>
+> version: deno 1.35.1 (release, x86_64-unknown-linux-gnu)
 
 ```console
-$ make up
+$ deno compile --allow-all --unstable https://raw.githubusercontent.com/ddddddO/jpostcoder/main/command/jpostcoder.ts
 ```
+
+### download binary from [here](https://github.com/ddddddO/jpostcoder/releases).
+
+
+## Setup with one-liner
+
+```console
+$ ./jpostcoder download && ./jpostcoder create && ./jpostcoder insert
+```
+
 
 ## Usage
 
