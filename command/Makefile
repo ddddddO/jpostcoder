@@ -1,25 +1,38 @@
-build:
-	tsc
+lint:
+	deno lint
 
-up: build download create insert
+fmt:
+	deno fmt
 
 clean:
 	rm postcode.db utf_all.csv
 
+up: build download create insert
+
+build:
+	deno compile --allow-all --unstable -o jpostcoder jpostcoder.ts
+
 download:
-	node dist/main.js download
+	./jpostcoder download
 
 create:
-	node dist/main.js create
+	./jpostcoder create
 
 insert:
-	node dist/main.js insert
+	./jpostcoder insert
 
 drop:
-	node dist/main.js drop
+	./jpostcoder drop
 
 debug:
-	node dist/main.js debug
+	./jpostcoder debug
 
 help:
-	node dist/main.js --help
+	./jpostcoder --help
+
+.PHONY: release
+release:
+	deno compile --target x86_64-unknown-linux-gnu --allow-all --unstable -o release/jpostcoder_x86_64-unknown-linux-gnu jpostcoder.ts
+	deno compile --target x86_64-pc-windows-msvc --allow-all --unstable -o release/jpostcoder_x86_64-pc-windows-msvc jpostcoder.ts
+	deno compile --target x86_64-apple-darwin --allow-all --unstable -o release/jpostcoder_x86_64-apple-darwin jpostcoder.ts
+	deno compile --target aarch64-apple-darwin --allow-all --unstable -o release/jpostcoder_aarch64-apple-darwin jpostcoder.ts
