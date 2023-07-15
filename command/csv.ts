@@ -29,7 +29,8 @@ export const getJpostcodes = (csvpath: string): string[] => {
   return raw.split("\n");
 };
 
-export const debugRawJpostcode = (vs: string[]): void => {
+export const debugRawJpostcode = (row: string): void => {
+  const vs = row.split(",");
   if (vs.length !== csv.header.length) throw new Error("not match column num");
   vs.map((v, i) => console.log(csv.header[i] + ":", v));
 };

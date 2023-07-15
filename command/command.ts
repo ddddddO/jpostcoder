@@ -80,7 +80,7 @@ export const command = (): void => {
       console.log("--- from CSV ---");
       const rows: string[] = getJpostcodes(options.csv);
       if (rows.length === 0) throw new Error("could not get from csv");
-      debugRawJpostcode(rows[0].split(","));
+      debugRawJpostcode(rows[0]);
 
       console.log("--- from DB ---");
       // FIXME: 「1 "0600000" "北海道" "札幌市中央区" "以下に掲載がない場合"」と"0600000"が0でパディングしてしまってる
