@@ -3,9 +3,10 @@ import {
   debugRawJpostcode,
   downloadJpostcodeCSV,
   getJpostcodes,
+  getRawJpostcodes,
 } from "./csv.ts";
 import { createPostcodes, dropPostcodes, insertJpostcodes } from "./db.ts";
-import { jpostcode, toJpostcode } from "./jpostcode.ts";
+import { jpostcode } from "./jpostcode.ts";
 
 export const command = (): void => {
   const program = new Command();
@@ -32,7 +33,7 @@ export const command = (): void => {
     })
     .action((options: { database: string }) => {
       console.log("Create postcodes table");
-      const db = new Database(options.database);
+      const db: Database = new Database(options.database);
       createPostcodes(db); // TODO: table分割
     });
 
@@ -46,12 +47,8 @@ export const command = (): void => {
     })
     .action((options: { csv: string; database: string }) => {
       console.log("Insert japan postcodes to database!");
-
-      const db = new Database(options.database);
-      const jpostcodes: jpostcode[] = getJpostcodes(options.csv)
-        .filter((row) => row.length !== 0)
-        .map((row) => toJpostcode(row.split(",")));
-
+      const db: Database = new Database(options.database);
+      const jpostcodes: jpostcode[] = getJpostcodes(options.csv);
       insertJpostcodes(db, jpostcodes);
     });
 
@@ -62,7 +59,7 @@ export const command = (): void => {
     })
     .action((options: { database: string }) => {
       console.log("Drop postcodes table...");
-      const db = new Database(options.database);
+      const db: Database = new Database(options.database);
       dropPostcodes(db);
     });
 
@@ -78,13 +75,13 @@ export const command = (): void => {
       console.log("Debug...");
 
       console.log("--- from CSV ---");
-      const rows: string[] = getJpostcodes(options.csv);
+      const rows: string[] = getRawJpostcodes(options.csv);
       if (rows.length === 0) throw new Error("could not get from csv");
       debugRawJpostcode(rows[0]);
 
       console.log("--- from DB ---");
       // FIXME: 「1 "0600000" "北海道" "札幌市中央区" "以下に掲載がない場合"」と"0600000"が0でパディングしてしまってる
-      const db = new Database(options.database);
+      const db: Database = new Database(options.database);
       const row: any = db.prepare("SELECT * FROM postcodes limit 1").get();
       console.log(row.id, row.postcode, row.ken, row.municipalities, row.area);
     });

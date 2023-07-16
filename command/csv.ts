@@ -1,5 +1,6 @@
 import { dirname } from "./deps.ts";
 import { csv } from "./constraints.ts";
+import { jpostcode, toJpostcode } from "./jpostcode.ts";
 
 const download = async (dest: string, src: string): Promise<boolean> => {
   try {
@@ -24,9 +25,15 @@ export const downloadJpostcodeCSV = async (dest: string): Promise<boolean> => {
   }
 };
 
-export const getJpostcodes = (csvpath: string): string[] => {
+export const getRawJpostcodes = (csvpath: string): string[] => {
   const raw = Deno.readTextFileSync(csvpath);
   return raw.split("\n");
+};
+
+export const getJpostcodes = (csvpath: string): jpostcode[] => {
+  return getRawJpostcodes(csvpath)
+    .filter((row) => row.length !== 0)
+    .map((row) => toJpostcode(row.split(",")));
 };
 
 export const debugRawJpostcode = (row: string): void => {

@@ -8,7 +8,7 @@ create_table:
 	sqlite3 postcode.db < schema.sql
 
 conn_db:
-	sqlite3 postcode.db
+	sqlite3 postcode.db -header -line
 
 #create_app:
 #	yarn create vite app --template=react-ts
