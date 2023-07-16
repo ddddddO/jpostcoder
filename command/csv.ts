@@ -18,8 +18,7 @@ const download = async (dest: string, src: string): Promise<boolean> => {
 export const downloadJpostcodeCSV = async (dest: string): Promise<boolean> => {
   try {
     await Deno.mkdir(dirname(dest), { recursive: true });
-    download(dest, csv.japan_postcode_csv_url);
-    return true;
+    return download(dest, csv.japan_postcode_csv_url);
   } catch (err) {
     throw err;
   }
